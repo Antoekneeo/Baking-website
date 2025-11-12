@@ -3,7 +3,7 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CookieBook</title>
+  <title>Cookie Jar</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -65,12 +65,12 @@
   <header>
    <div class="container nav">
     <button class="hamburger" aria-label="Toggle navigation" aria-controls="nav-links" aria-expanded="false"><span></span></button>
-    <a href="#" class="brand"><span class="logo">🍪</span><span>CookieBook</span></a>
+    <a href="#" class="brand"><span class="logo">🍪</span><span>Cookie Jar</span></a>
     <nav id="nav-links" class="links" role="navigation">
-     <a href="#">Home</a>
-     <a href="#">Recipes</a>
-     <a href="#">My Recipes</a>
-     <a href="#">About</a>
+     <a href="{{ url_for('home') }}">Home</a>
+     <a href="{{ url_for('recipes') }}">Recipes</a>
+     <a href="{{ url_for('my_recipes') }}">My Recipes</a>
+     <a href="{{ url_for('about') }}">About</a>
     </nav>
    </div>
   </header>
@@ -81,8 +81,8 @@
     <div class="hero-copy">
      <h1>Bake Something Sweet</h1>
      <div class="hero-actions">
-      <a href="#recipes" class="btn">Explore Recipes</a>
-      <a href="#" class="btn secondary">My Recipes</a>
+      <a href="{{ url_for('recipes') }}" class="btn">Explore Recipes</a>
+      <a href="{{ url_for('my_recipes') }}" class="btn secondary">My Recipes</a>
      </div>
     </div>
    </section>
@@ -93,7 +93,7 @@
      <div class="card-body">
       <div class="category">Category</div>
       <div class="title">Chocolate Chip Cookies</div>
-      <div class="card-actions"><a class="btn" href="#">View Recipe</a></div>
+      <div class="card-actions"><a class="btn" href="{{ url_for('recipes') }}">View Recipe</a></div>
      </div>
     </article>
     <article class="card">
@@ -101,7 +101,7 @@
      <div class="card-body">
       <div class="category">Category</div>
       <div class="title">Vanilla Cupcakes</div>
-      <div class="card-actions"><a class="btn" href="#">View Recipe</a></div>
+      <div class="card-actions"><a class="btn" href="{{ url_for('recipes') }}">View Recipe</a></div>
      </div>
     </article>
     <article class="card">
@@ -109,7 +109,7 @@
      <div class="card-body">
       <div class="category">Category</div>
       <div class="title">Oatmeal Raisin</div>
-      <div class="card-actions"><a class="btn" href="#">View Recipe</a></div>
+      <div class="card-actions"><a class="btn" href="{{ url_for('recipes') }}">View Recipe</a></div>
      </div>
     </article>
     <article class="card">
@@ -117,7 +117,7 @@
      <div class="card-body">
       <div class="category">Category</div>
       <div class="title">Peanut Butter</div>
-      <div class="card-actions"><a class="btn" href="#">View Recipe</a></div>
+      <div class="card-actions"><a class="btn" href="{{ url_for('recipes') }}">View Recipe</a></div>
      </div>
     </article>
    </section>
