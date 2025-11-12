@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Recipes • Cookie Jar</title>
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="%23d2a679"/><circle cx="22" cy="22" r="3" fill="%235b3a1e"/><circle cx="42" cy="20" r="3" fill="%235b3a1e"/><circle cx="40" cy="40" r="3" fill="%235b3a1e"/><circle cx="26" cy="44" r="3" fill="%235b3a1e"/><circle cx="32" cy="30" r="2.5" fill="%235b3a1e"/></svg>'>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -23,12 +24,20 @@
    main{padding:32px 0 40px}
    h1{margin:0 0 12px}
    .muted{color:var(--muted)}
+   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+   .card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.06);display:flex;flex-direction:column}
+   .card-media{background:#f3f4f6;border-bottom:1px dashed var(--border);aspect-ratio:4/3}
+   .card-body{padding:12px;display:grid;gap:8px}
+   .title{font-size:16px;font-weight:600}
+   .btn{display:inline-flex;align-items:center;justify-content:center;height:42px;padding:0 18px;border-radius:999px;font-weight:700;border:1px solid var(--btn);background:var(--btn);color:var(--btnText)}
+   @media(max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}}
+   @media(max-width:640px){.grid{grid-template-columns:1fr}}
   </style>
  </head>
  <body>
   <header>
    <div class="container nav">
-    <a href="{{ url_for('home') }}" class="brand"><span class="logo">🍪</span><span>Cookie Jar</span></a>
+    <a href="{{ url_for('home') }}" class="brand"><span class="logo" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="20" height="20"><circle cx="32" cy="32" r="26" fill="#d2a679"/><circle cx="22" cy="22" r="3" fill="#5b3a1e"/><circle cx="42" cy="20" r="3" fill="#5b3a1e"/><circle cx="40" cy="40" r="3" fill="#5b3a1e"/><circle cx="26" cy="44" r="3" fill="#5b3a1e"/><circle cx="32" cy="30" r="2.5" fill="#5b3a1e"/></svg></span><span>Cookie Jar</span></a>
     <nav class="links">
      <a href="{{ url_for('home') }}">Home</a>
      <a href="{{ url_for('recipes') }}">Recipes</a>
@@ -41,20 +50,39 @@
 
   <main class="container">
    <h1>My Recipes</h1>
-   <p class="muted">Save your favorites or add your own bakes.</p>
+   <p class="muted">Your favorited cookies live here.</p>
+
+   {% if recipes and recipes|length > 0 %}
+   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <span class="muted">{{ recipes|length }} recipe{{ '' if recipes|length==1 else 's' }}</span>
+    <a class="btn" href="{{ url_for('new_recipe') }}">Add Recipe</a>
+   </div>
+   <section class="grid" aria-label="My recipe list">
+    {% for slug, recipe in recipes.items() %}
+    <article class="card">
+     <div class="card-media" aria-hidden="true"></div>
+     <div class="card-body">
+      <div class="title">{{ recipe.title }}</div>
+      <a class="btn" href="{{ url_for('recipe_detail', slug=slug) }}">View</a>
+     </div>
+    </article>
+    {% endfor %}
+   </section>
+   {% else %}
    <section style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 6px 18px rgba(0,0,0,.06);display:grid;gap:12px">
     <div style="display:flex;align-items:center;gap:12px">
-     <div style="width:56px;height:56px;border-radius:50%;border:2px dashed var(--border);display:grid;place-items:center">🍪</div>
+     <div style="width:56px;height:56px;border-radius:50%;border:2px dashed var(--border);display:grid;place-items:center">🫙</div>
      <div>
       <div style="font-weight:600">No recipes yet</div>
       <div class="muted">Start filling your cookie jar.</div>
      </div>
     </div>
     <div>
-     <a class="btn" href="{{ url_for('recipes') }}">Explore Recipes</a>
-     <a class="btn secondary" href="#">Add Your Recipe</a>
+     <a class="btn" href="{{ url_for('new_recipe') }}">Add Your First Recipe</a>
+     <a class="btn" style="background:transparent;color:var(--text);border-color:var(--border)" href="{{ url_for('recipes') }}">Browse Recipes</a>
     </div>
    </section>
+   {% endif %}
   </main>
 
   <footer>

@@ -3,15 +3,13 @@
  <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{ recipe.title }} • Cookie Jar</title>
+  <title>Edit Recipe • Cookie Jar</title>
   <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="%23d2a679"/><circle cx="22" cy="22" r="3" fill="%235b3a1e"/><circle cx="42" cy="20" r="3" fill="%235b3a1e"/><circle cx="40" cy="40" r="3" fill="%235b3a1e"/><circle cx="26" cy="44" r="3" fill="%235b3a1e"/><circle cx="32" cy="30" r="2.5" fill="%235b3a1e"/></svg>'>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
    :root { --bg:#faf5e6; --text:#3b2f2f; --muted:#7a6a58; --brand:#5b3a1e; --card:#ffffff; --border:#eadfcf; --btn:#5b3a1e; --btnText:#ffffff; }
-   [data-theme="cookie"] { --bg:#faf5e6; --text:#3b2f2f; --muted:#7a6a58; --brand:#5b3a1e; --card:#ffffff; --border:#eadfcf; --btn:#5b3a1e; --btnText:#ffffff; }
-   [data-theme="jar"] { --bg:#f1f7fb; --text:#123047; --muted:#5b6b78; --brand:#2b7a9b; --card:#ffffff; --border:#d6e6f1; --btn:#2b7a9b; --btnText:#ffffff; }
    *{box-sizing:border-box}
    body{margin:0;font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:var(--bg)}
    a{color:inherit;text-decoration:none}
@@ -23,15 +21,11 @@
    .links{display:flex;gap:24px}
    .theme-btn{width:40px;height:40px;border-radius:12px;border:1px solid var(--border);background:var(--card);display:inline-grid;place-items:center;font-size:18px}
    main{padding:32px 0 40px}
-   h1{margin:0 0 8px}
-   .muted{color:var(--muted)}
-   .hero{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:20px}
-   .media{background:var(--card);border:2px dashed var(--border);border-radius:16px;aspect-ratio:16/9;box-shadow:0 6px 20px rgba(0,0,0,.07)}
-   .section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
-   .two-col{display:grid;grid-template-columns:1fr 2fr;gap:16px}
-   ul{margin:0;padding-left:20px}
+   .field{display:grid;gap:6px}
+   .input{border:1px solid var(--border);border-radius:12px;padding:10px;background:var(--card)}
+   .row{display:grid;gap:12px;margin-bottom:12px}
    .btn{display:inline-flex;align-items:center;justify-content:center;height:42px;padding:0 18px;border-radius:999px;font-weight:700;border:1px solid var(--btn);background:var(--btn);color:var(--btnText)}
-   @media(max-width:800px){ .two-col{grid-template-columns:1fr} }
+   .muted{color:var(--muted)}
   </style>
  </head>
  <body>
@@ -44,52 +38,43 @@
      <a href="{{ url_for('my_recipes') }}">My Recipes</a>
      <a href="{{ url_for('about') }}">About</a>
     </nav>
-    <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme" title="Toggle theme">🍪</button>
+    <button class="theme-btn" disabled>🍪</button>
    </div>
   </header>
 
   <main class="container">
-   <div class="hero">
-    <div class="media" aria-hidden="true"></div>
+   <h1>Edit Recipe</h1>
+   {% if error %}
+   <p class="muted" style="color:#b91c1c">{{ error }}</p>
+   {% endif %}
+   <form method="post" class="row">
+    <label class="field">
+     <span>Title</span>
+     <input name="title" class="input" value="{{ recipe.title }}" required />
+    </label>
+    <label class="field">
+     <span>Description</span>
+     <input name="description" class="input" value="{{ recipe.description }}" />
+    </label>
+    <label class="field">
+     <span>Tags (comma separated)</span>
+     <input name="tags" class="input" value="{{ (recipe.tags or [])|reject('equalto','cookies')|list|join(', ') }}" />
+    </label>
+    <label class="field">
+     <span>Ingredients (one per line)</span>
+     <textarea name="ingredients" class="input" rows="6">{% for i in recipe.ingredients %}{{ i }}
+{% endfor %}</textarea>
+    </label>
+    <label class="field">
+     <span>Steps (one per line)</span>
+     <textarea name="steps" class="input" rows="6">{% for s in recipe.steps %}{{ s }}
+{% endfor %}</textarea>
+    </label>
     <div>
-     <h1>{{ recipe.title }}</h1>
-     <div class="muted">{{ recipe.category }}</div>
-     <p style="margin:8px 0 0" class="muted">{{ recipe.description }}</p>
+     <button class="btn" type="submit">Save Changes</button>
+     <a class="btn" style="background:transparent;color:var(--text);border-color:var(--border)" href="{{ url_for('recipe_detail', slug=slug) }}">Cancel</a>
     </div>
-   </div>
-
-   <section class="two-col">
-    <div class="section">
-     <h2 style="margin:0 0 8px">Ingredients</h2>
-     <ul>
-      {% for item in recipe.ingredients %}
-      <li>{{ item }}</li>
-      {% endfor %}
-     </ul>
-    </div>
-    <div class="section">
-     <h2 style="margin:0 0 8px">Method</h2>
-     <ol style="margin:0;padding-left:20px">
-      {% for step in recipe.steps %}
-      <li style="margin-bottom:6px">{{ step }}</li>
-      {% endfor %}
-     </ol>
-     <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap">
-      <a class="btn" href="{{ url_for('recipes') }}">Back to recipes</a>
-      <a class="btn" style="background:#374151;border-color:#374151" href="{{ url_for('edit_recipe', slug=slug) }}">Edit</a>
-      <form method="post" action="{{ url_for('toggle_favorite', slug=slug) }}">
-       {% if recipe.favorite %}
-       <button class="btn" type="submit" style="background:#92400e;border-color:#92400e">Unfavorite</button>
-       {% else %}
-       <button class="btn" type="submit" style="background:#d97706;border-color:#d97706">Favorite</button>
-       {% endif %}
-      </form>
-      <form method="post" action="{{ url_for('delete_recipe', slug=slug) }}" onsubmit="return confirm('Delete this recipe? This cannot be undone.');">
-       <button class="btn" type="submit" style="background:#b91c1c;border-color:#b91c1c">Delete</button>
-      </form>
-     </div>
-    </div>
-   </section>
+   </form>
   </main>
 
   <footer>
@@ -99,14 +84,5 @@
     <div style="font-size:12px" class="muted">© 2025 Cookie Jar · <a href="mailto:hello@cookiejar.local">hello@cookiejar.local</a></div>
    </div>
   </footer>
-
-  <script>
-   const themeBtn=document.getElementById('theme-toggle');
-   const root=document.documentElement; const savedTheme=localStorage.getItem('theme');
-   if(savedTheme) root.setAttribute('data-theme', savedTheme);
-   function updateThemeIcon(){ const mode=root.getAttribute('data-theme')||'cookie'; themeBtn.textContent=mode==='jar'?'🫙':'🍪'; }
-   updateThemeIcon();
-   themeBtn?.addEventListener('click',()=>{const cur=root.getAttribute('data-theme')||'cookie'; const next=cur==='cookie'?'jar':'cookie'; root.setAttribute('data-theme', next); localStorage.setItem('theme', next); updateThemeIcon();});
-  </script>
  </body>
 </html>
