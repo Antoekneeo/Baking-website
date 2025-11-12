@@ -8,10 +8,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-   :root { --bg:#fafafa; --text:#1f2937; --muted:#6b7280; --brand:#111827; --card:#ffffff; --border:#e5e7eb; --btn:#111827; --btnText:#ffffff; }
+   :root { --bg:#faf5e6; --text:#3b2f2f; --muted:#7a6a58; --brand:#5b3a1e; --card:#ffffff; --border:#eadfcf; --btn:#5b3a1e; --btnText:#ffffff; }
+   [data-theme="cookie"] { --bg:#faf5e6; --text:#3b2f2f; --muted:#7a6a58; --brand:#5b3a1e; --card:#ffffff; --border:#eadfcf; --btn:#5b3a1e; --btnText:#ffffff; }
+   [data-theme="jar"] { --bg:#f1f7fb; --text:#123047; --muted:#5b6b78; --brand:#2b7a9b; --card:#ffffff; --border:#d6e6f1; --btn:#2b7a9b; --btnText:#ffffff; }
    * { box-sizing: border-box; }
    html, body { height: 100%; }
-   body { margin: 0; font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: var(--text); background: var(--bg); }
+   body { margin: 0; font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: var(--text); background:
+     radial-gradient(12px 12px at 20% 10%, rgba(0,0,0,0.03) 0 20%, transparent 22%),
+     radial-gradient(10px 10px at 70% 40%, rgba(0,0,0,0.025) 0 18%, transparent 20%),
+     var(--bg);
+   }
    a { color: inherit; text-decoration: none; }
 
    .container { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
@@ -19,24 +25,29 @@
    header { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.9); backdrop-filter: saturate(180%) blur(8px); border-bottom: 1px solid var(--border); }
    .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
-   .brand .logo { width: 28px; height: 28px; border: 2px solid var(--brand); border-radius: 50%; display: grid; place-items: center; font-size: 14px; }
+   .brand .logo { width: 28px; height: 28px; border: 2px solid var(--brand); border-radius: 50%; display: grid; place-items: center; font-size: 14px; background: var(--card); box-shadow: 0 2px 6px rgba(0,0,0,.06); }
    .links { display: flex; align-items: center; gap: 24px; }
-   .hamburger { display: none; width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); align-items: center; justify-content: center; }
+   .hamburger { display: none; width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--border); background: var(--card); align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,.06); }
    .hamburger span { width: 18px; height: 2px; background: var(--text); position: relative; display: block; }
    .hamburger span::before, .hamburger span::after { content: ""; position: absolute; left: 0; width: 18px; height: 2px; background: var(--text); }
    .hamburger span::before { top: -6px; }
    .hamburger span::after { top: 6px; }
+   .theme-btn { width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--border); background: var(--card); display: inline-grid; place-items: center; font-size: 18px; box-shadow: 0 2px 6px rgba(0,0,0,.06); }
 
    main { padding: 32px 0 40px; }
    .hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: center; margin-bottom: 28px; }
-   .hero-media { background: var(--card); border: 2px dashed var(--border); border-radius: 12px; aspect-ratio: 16/9; }
+   .hero-media { background: var(--card); border: 2px dashed var(--border); border-radius: 16px; aspect-ratio: 16/9; box-shadow: 0 6px 20px rgba(0,0,0,.07); }
    .hero-copy h1 { font-size: clamp(28px, 4vw, 48px); line-height: 1.1; margin: 0 0 14px; font-weight: 700; }
    .hero-actions { display: flex; gap: 12px; }
-   .btn { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 18px; border-radius: 10px; font-weight: 600; border: 1px solid var(--btn); background: var(--btn); color: var(--btnText); }
-   .btn.secondary { background: transparent; color: var(--text); border-color: var(--border); }
+   .btn { display: inline-flex; align-items: center; justify-content: center; height: 46px; padding: 0 20px; border-radius: 999px; font-weight: 700; border: 1px solid var(--btn); background: var(--btn); color: var(--btnText); box-shadow: 0 6px 14px rgba(0,0,0,.08); transition: transform .08s ease, box-shadow .2s ease, background .2s ease; }
+   .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 18px rgba(0,0,0,.10); }
+   .btn:active { transform: translateY(0); box-shadow: 0 4px 10px rgba(0,0,0,.10); }
+   .btn.secondary { background: transparent; color: var(--text); border-color: var(--border); box-shadow: 0 2px 6px rgba(0,0,0,.04); }
+   .btn.secondary:hover { background: rgba(0,0,0,.03); }
 
    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-   .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+   .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 6px 18px rgba(0,0,0,.06); transition: transform .08s ease, box-shadow .2s ease; }
+   .card:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(0,0,0,.09); }
    .card-media { background: #f3f4f6; border-bottom: 1px dashed var(--border); aspect-ratio: 4/3; }
    .card-body { padding: 12px; display: grid; gap: 8px; }
    .category { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
@@ -45,6 +56,8 @@
    .card .btn { width: 100%; height: 40px; }
 
    footer { border-top: 1px solid var(--border); padding: 18px 0; text-align: center; color: var(--muted); font-size: 14px; }
+   .footer { display:grid; place-items:center; gap:6px; text-align:center; }
+   .footer .logo { width:28px; height:28px; border:2px solid var(--brand); border-radius:50%; display:grid; place-items:center; font-size:14px; background:var(--card); }
 
    @media (max-width: 960px) {
      .hero { grid-template-columns: 1fr; }
@@ -72,6 +85,7 @@
      <a href="{{ url_for('my_recipes') }}">My Recipes</a>
      <a href="{{ url_for('about') }}">About</a>
     </nav>
+    <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme" title="Toggle theme">🍪</button>
    </div>
   </header>
 
@@ -91,40 +105,44 @@
     <article class="card">
      <div class="card-media" aria-hidden="true"></div>
      <div class="card-body">
-      <div class="category">Category</div>
+      <div class="category">Cookies</div>
       <div class="title">Chocolate Chip Cookies</div>
-      <div class="card-actions"><a class="btn" href="{{ url_for('recipes') }}">View Recipe</a></div>
+      <div class="card-actions"><a class="btn" href="{{ url_for('recipe_detail', slug='chocolate-chip-cookies') }}">View Recipe</a></div>
      </div>
     </article>
     <article class="card">
      <div class="card-media" aria-hidden="true"></div>
      <div class="card-body">
-      <div class="category">Category</div>
-      <div class="title">Vanilla Cupcakes</div>
-      <div class="card-actions"><a class="btn" href="{{ url_for('recipes') }}">View Recipe</a></div>
+      <div class="category">Cookies</div>
+      <div class="title">Snickerdoodles</div>
+      <div class="card-actions"><a class="btn" href="{{ url_for('recipe_detail', slug='snickerdoodles') }}">View Recipe</a></div>
      </div>
     </article>
     <article class="card">
      <div class="card-media" aria-hidden="true"></div>
      <div class="card-body">
-      <div class="category">Category</div>
+      <div class="category">Cookies</div>
       <div class="title">Oatmeal Raisin</div>
-      <div class="card-actions"><a class="btn" href="{{ url_for('recipes') }}">View Recipe</a></div>
+      <div class="card-actions"><a class="btn" href="{{ url_for('recipe_detail', slug='oatmeal-raisin') }}">View Recipe</a></div>
      </div>
     </article>
     <article class="card">
      <div class="card-media" aria-hidden="true"></div>
      <div class="card-body">
-      <div class="category">Category</div>
-      <div class="title">Peanut Butter</div>
-      <div class="card-actions"><a class="btn" href="{{ url_for('recipes') }}">View Recipe</a></div>
+      <div class="category">Cookies</div>
+      <div class="title">Peanut Butter Cookies</div>
+      <div class="card-actions"><a class="btn" href="{{ url_for('recipe_detail', slug='peanut-butter-cookies') }}">View Recipe</a></div>
      </div>
     </article>
    </section>
   </main>
 
   <footer>
-   <div class="container">Footer text</div>
+   <div class="container footer">
+    <div class="logo">🍪</div>
+    <div class="muted">Baking simple, cozy cookies.</div>
+    <div style="font-size:12px" class="muted">© 2025 Cookie Jar · <a href="mailto:hello@cookiejar.local">hello@cookiejar.local</a></div>
+   </div>
   </footer>
 
   <script>
@@ -136,6 +154,23 @@
        toggle.setAttribute('aria-expanded', String(open));
      });
    }
+
+   const themeBtn = document.getElementById('theme-toggle');
+   const root = document.documentElement;
+   const savedTheme = localStorage.getItem('theme');
+   if (savedTheme) root.setAttribute('data-theme', savedTheme);
+   function updateThemeIcon() {
+     const mode = root.getAttribute('data-theme') || 'cookie';
+     themeBtn.textContent = mode === 'jar' ? '🫙' : '🍪';
+   }
+   updateThemeIcon();
+   themeBtn?.addEventListener('click', () => {
+     const current = root.getAttribute('data-theme') || 'cookie';
+     const next = current === 'cookie' ? 'jar' : 'cookie';
+     root.setAttribute('data-theme', next);
+     localStorage.setItem('theme', next);
+     updateThemeIcon();
+   });
   </script>
  </body>
  </html>
